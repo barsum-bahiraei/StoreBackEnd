@@ -6,10 +6,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Seller } from '../../seller/entities/seller.entity';
+import { SellerEntity } from '../../seller/entities/seller.entity';
 
 @Entity('product')
-export class Product {
+export class ProductEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,8 +19,8 @@ export class Product {
   @Column()
   description: string;
 
-  @ManyToOne(() => Seller, (seller) => seller.id)
-  seller: Seller;
+  @ManyToOne(() => SellerEntity, (seller) => seller.id)
+  seller: SellerEntity;
 
   @CreateDateColumn({
     type: 'timestamp',

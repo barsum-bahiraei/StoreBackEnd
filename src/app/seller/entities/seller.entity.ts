@@ -6,10 +6,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Product } from '../../product/entities/product.entity';
+import { ProductEntity } from '../../product/entities/product.entity';
 
 @Entity('seller')
-export class Seller {
+export class SellerEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -22,8 +22,8 @@ export class Seller {
   @Column()
   age: number;
 
-  @OneToMany(() => Product, (product) => product.id)
-  products: Product[];
+  @OneToMany(() => ProductEntity, (product) => product.id)
+  products: ProductEntity[];
 
   @CreateDateColumn({
     type: 'timestamp',

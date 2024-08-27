@@ -4,10 +4,20 @@ import { AppService } from './app.service';
 import { ProductModule } from './app/product/product.module';
 import { CustomerModule } from './app/customer/customer.module';
 import { SellerModule } from './app/seller/seller.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmConfigService } from './providers/database.provider';
 
 @Module({
-  imports: [ProductModule, CustomerModule, SellerModule],
+  imports: [
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
+      inject: [TypeOrmConfigService],
+    }),
+    ProductModule,
+    CustomerModule,
+    SellerModule,
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TypeOrmConfigService],
 })
 export class AppModule {}

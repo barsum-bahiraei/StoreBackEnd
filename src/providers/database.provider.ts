@@ -11,9 +11,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       host: 'localhost',
       port: 1433,
       username: 'sa',
-      password: 'database1234',
+      password: 'D@Tabase43218765',
       database: 'Store',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [__dirname + 'app/**/*.entity{.ts,.js}'],
       synchronize: true,
       options: {
         trustServerCertificate: true,
