@@ -13,7 +13,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: 'sa',
       password: 'D@Tabase43218765',
       database: 'Store',
-      entities: [__dirname + 'app/**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/../app/**/*.entity{.ts,.js}'],
       synchronize: true,
       options: {
         trustServerCertificate: true,

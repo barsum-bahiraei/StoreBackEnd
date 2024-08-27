@@ -23,15 +23,15 @@ export class ProductEntity {
   seller: SellerEntity;
 
   @CreateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
+    type: 'datetime2',
+    default: () => 'SYSDATETIME()',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
-    onUpdate: 'CURRENT_TIMESTAMP(6)',
+    type: 'datetime2',
+    default: () => 'SYSDATETIME()',
+    onUpdate: 'SYSDATETIME()',
   })
   updatedAt: Date;
 }
