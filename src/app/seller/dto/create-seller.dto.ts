@@ -10,7 +10,7 @@ export class CreateSellerDto {
   @IsString()
   family: string;
 
-  @ApiProperty({ type: 'number', required: true, default: 2 })
+  @ApiProperty({ type: 'number', required: true, default: 27 })
   @IsNumber()
   age: number;
 }

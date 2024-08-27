@@ -11,7 +11,7 @@ export class SellerService {
     @InjectRepository(SellerEntity)
     private readonly sellerRepository: Repository<SellerEntity>,
   ) {}
-  async create(createSellerDto: CreateSellerDto) {
+  async create(createSellerDto: CreateSellerDto): Promise<SellerEntity> {
     const seller = new SellerEntity();
     seller.name = createSellerDto.name;
     seller.family = createSellerDto.family;
@@ -23,15 +23,23 @@ export class SellerService {
     return await this.sellerRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} seller`;
+  async findOne(id: number): Promise<SellerEntity> {
+    return await this.sellerRepository.findOneBy({
+      id: id,
+    });
   }
 
-  update(id: number, updateSellerDto: UpdateSellerDto) {
-    return `This action updates a #${id} seller`;
+  async update(updateSellerDto: UpdateSellerDto): Promise<SellerEntity> {
+    const seller: SellerEntity = await this.sellerRepository.findOneBy({
+      id: updateSellerDto.id,
+    });
+    seller.name = updateSellerDto.name;
+    seller.family = updateSellerDto.family;
+    seller.age = updateSellerDto.age;
+    return await this.sellerRepository.save(seller);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} seller`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} seller`;
+  // }
 }
