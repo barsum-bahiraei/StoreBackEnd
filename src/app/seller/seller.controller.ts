@@ -16,8 +16,8 @@ export class SellerController {
   constructor(private readonly sellerService: SellerService) {}
 
   @Post()
-  create(@Body() createSellerDto: CreateSellerDto) {
-    return this.sellerService.create(createSellerDto);
+  async create(@Body() createSellerDto: CreateSellerDto) {
+    return await this.sellerService.create(createSellerDto);
   }
 
   @Get()

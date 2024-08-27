@@ -13,11 +13,10 @@ export class SellerService {
   ) {}
   async create(createSellerDto: CreateSellerDto) {
     const seller = new SellerEntity();
-    seller.name = 'amin';
-    seller.family = 'amin';
-    seller.age = 23;
-    await this.sellerRepository.save(seller);
-    return 'This action adds a new seller';
+    seller.name = createSellerDto.name;
+    seller.family = createSellerDto.family;
+    seller.age = createSellerDto.age;
+    return await this.sellerRepository.save(seller);
   }
 
   async findAll(): Promise<SellerEntity[]> {

@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ProductEntity } from '../../product/entities/product.entity';
+import { CreateSellerDto } from '../dto/create-seller.dto';
 
 @Entity('seller')
 export class SellerEntity {
