@@ -6,9 +6,14 @@ import { CustomerModule } from './app/customer/customer.module';
 import { SellerModule } from './app/seller/seller.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './providers/database.provider';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env.development'],
+    }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
       inject: [TypeOrmConfigService],
