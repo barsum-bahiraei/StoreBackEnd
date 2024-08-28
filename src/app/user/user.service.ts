@@ -7,6 +7,8 @@ import { Repository } from 'typeorm';
 import { createHmac } from 'crypto';
 import { ConfigService } from '@nestjs/config';
 import { ResponseFilter } from '../../infrastructure/filters/response.filter';
+import { LoginUserDto } from './dto/login-user.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
@@ -14,6 +16,7 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private readonly configService: ConfigService,
+    private readonly jwtService: JwtService,
   ) {}
   async create(
     createUserDto: CreateUserDto,
@@ -33,20 +36,36 @@ export class UserService {
     return new ResponseFilter(200, null, user);
   }
 
-  private hashPassword(password: string) {
-    const key = this.configService.get<string>('PASSWORD_SECRET_KEY');
-    return createHmac('sha256', key).update(password).digest('hex');
-  }
-
   async findOne(email: string) {
-    return await this.userRepository.findOneBy({
+    const user = await this.userRepository.findOneBy({
       email: email,
     });
+    if (!user.confirmEmail) {
+      return new ResponseFilter(200, 'email is not confirmed', null);
+    }
+    return new ResponseFilter(200, null, user);
+  }
+
+  async login(loginUserDto: LoginUserDto) {
+    const user = await this.findOne(loginUserDto.email);
+    if (!user.data) {
+      return new ResponseFilter(400, 'email or password is wrong', null);
+    }
+    if (user.data.password != this.hashPassword(loginUserDto.password)) {
+      return new ResponseFilter(200, 'email or password is wrong', null);
+    }
+    const token = this.jwtService.signAsync(user.data.email);
+    return new ResponseFilter(200, null, token);
   }
 
   // findOne() {
   //   return `This action returns a #${1} user`;
   // }
+
+  private hashPassword(password: string) {
+    const key = this.configService.get<string>('PASSWORD_SECRET_KEY');
+    return createHmac('sha256', key).update(password).digest('hex');
+  }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
