@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductModule } from './app/product/product.module';
-import { CustomerModule } from './app/customer/customer.module';
 import { SellerModule } from './app/seller/seller.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfigService } from './providers/database.provider';
+import { TypeOrmConfigService } from './infrastructure/configs/database.config';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './app/user/user.module';
 
 @Module({
   imports: [
@@ -19,8 +19,8 @@ import { ConfigModule } from '@nestjs/config';
       inject: [TypeOrmConfigService],
     }),
     ProductModule,
-    CustomerModule,
     SellerModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, TypeOrmConfigService],

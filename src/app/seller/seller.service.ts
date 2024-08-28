@@ -14,8 +14,6 @@ export class SellerService {
   async create(createSellerDto: CreateSellerDto): Promise<SellerEntity> {
     const seller = new SellerEntity();
     seller.name = createSellerDto.name;
-    seller.family = createSellerDto.family;
-    seller.age = createSellerDto.age;
     return await this.sellerRepository.save(seller);
   }
 
@@ -34,8 +32,6 @@ export class SellerService {
       id: updateSellerDto.id,
     });
     seller.name = updateSellerDto.name;
-    seller.family = updateSellerDto.family;
-    seller.age = updateSellerDto.age;
     return await this.sellerRepository.save(seller);
   }
 

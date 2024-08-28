@@ -2,22 +2,32 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ProductEntity } from '../../product/entities/product.entity';
 
-@Entity('seller')
-export class SellerEntity {
+@Entity('users')
+export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   name: string;
 
-  @OneToMany(() => ProductEntity, (product) => product.id)
-  products: ProductEntity[];
+  @Column()
+  family: string;
+
+  @Column({ unique: true })
+  email: string;
+
+  @Column()
+  password: string;
+
+  @Column()
+  age: number;
+
+  @Column({ default: false })
+  confirmEmail: boolean;
 
   @CreateDateColumn({
     type: 'datetime2',
