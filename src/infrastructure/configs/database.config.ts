@@ -14,7 +14,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       password: this.configService.get<string>('DATABASE_PASSWORD'),
       //password: 'D@Tabase43218765',
       database: this.configService.get<string>('DATABASE_NAME'),
-      entities: [__dirname + '/../app/**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/../../app/**/*.entity{.ts,.js}'],
       synchronize: true,
       options: {
         trustServerCertificate: true,
