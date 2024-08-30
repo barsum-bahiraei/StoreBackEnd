@@ -10,6 +10,27 @@ async function bootstrap() {
     .setDescription('Express Store App')
     .setVersion('1.0')
     .addTag('store')
+    .addBearerAuth(
+      {
+        description: `Please enter token in following format: Bearer <JWT>`,
+        name: 'Authorization',
+        bearerFormat: 'JWT', // Optional, useful for documentation
+        scheme: 'Bearer',
+        type: 'http', // Can be 'apiKey' for a different approach
+        in: 'header',
+      },
+      'access-token', // Security name to reference in @ApiBearerAuth
+    )
+    // .addBearerAuth(
+    //   {
+    //     type: 'http',
+    //     scheme: 'Bearer',
+    //     bearerFormat: 'JWT', // optional, but good practice
+    //     name: 'Authorization',
+    //     in: 'header',
+    //   },
+    //   'access-token', // This is the name of the security scheme you can refer to in your controllers
+    // )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);

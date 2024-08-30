@@ -21,8 +21,8 @@ export class UserService {
   async create(
     createUserDto: CreateUserDto,
   ): Promise<ResponseFilter<UserEntity>> {
-    const hasUser = await this.findOne(createUserDto.email);
-    if (hasUser) {
+    const { data } = await this.findOne(createUserDto.email);
+    if (data) {
       return new ResponseFilter(400, 'user exist', null);
     }
     const user: UserEntity = this.userRepository.create({
@@ -30,6 +30,7 @@ export class UserService {
       family: createUserDto.family,
       age: createUserDto.age,
       email: createUserDto.email,
+      confirmEmail: false,
       password: this.hashPassword(createUserDto.password),
     });
     await this.userRepository.save(user);
@@ -40,6 +41,9 @@ export class UserService {
     const user = await this.userRepository.findOneBy({
       email: email,
     });
+    if (!user) {
+      return new ResponseFilter(200, 'user not exist', user);
+    }
     if (!user.confirmEmail) {
       return new ResponseFilter(200, 'email is not confirmed', null);
     }
@@ -54,13 +58,11 @@ export class UserService {
     if (user.data.password != this.hashPassword(loginUserDto.password)) {
       return new ResponseFilter(200, 'email or password is wrong', null);
     }
-    const token = this.jwtService.signAsync(user.data.email);
+    const token = await this.jwtService.signAsync({
+      email: user.data.email,
+    });
     return new ResponseFilter(200, null, token);
   }
-
-  // findOne() {
-  //   return `This action returns a #${1} user`;
-  // }
 
   private hashPassword(password: string) {
     const key = this.configService.get<string>('PASSWORD_SECRET_KEY');

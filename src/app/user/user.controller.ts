@@ -11,6 +11,9 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { User } from './decorators/user.decorator';
+import { UserEntity } from './entities/user.entity';
+import { Authenticate } from './decorators/authenticate.decorator';
 
 @Controller('user')
 export class UserController {
@@ -29,10 +32,11 @@ export class UserController {
   // findAll() {
   //   return this.userService.findAll();
   // }
-
+  @Authenticate()
   @Get()
-  findOne() {
-    return this.userService.findOne('asdf');
+  findOne(@User() user: UserEntity) {
+    console.log(user);
+    return this.userService.findOne(user.email);
   }
 
   @Patch(':id')

@@ -15,7 +15,7 @@ import { UserEntity } from './entities/user.entity';
       useFactory: (configService: ConfigService) => {
         return {
           global: true,
-          signOptions: { expiresIn: '1d' },
+          signOptions: { expiresIn: '60d' },
           secret: configService.get<string>('SECRET_KEY'),
         };
       },
