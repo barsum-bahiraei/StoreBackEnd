@@ -37,7 +37,7 @@ export class UserService {
     return new ResponseFilter(200, null, user);
   }
 
-  async findOne(email: string) {
+  async findOne(email: string): Promise<ResponseFilter<UserEntity>> {
     const user = await this.userRepository.findOneBy({
       email: email,
     });
@@ -50,7 +50,7 @@ export class UserService {
     return new ResponseFilter(200, null, user);
   }
 
-  async login(loginUserDto: LoginUserDto) {
+  async login(loginUserDto: LoginUserDto): Promise<ResponseFilter<string>> {
     const user = await this.findOne(loginUserDto.email);
     if (!user.data) {
       return new ResponseFilter(400, 'email or password is wrong', null);
@@ -64,16 +64,20 @@ export class UserService {
     return new ResponseFilter(200, null, token);
   }
 
-  private hashPassword(password: string) {
+  private hashPassword(password: string): string {
     const key = this.configService.get<string>('PASSWORD_SECRET_KEY');
     return createHmac('sha256', key).update(password).digest('hex');
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async update(
+    user: UserEntity,
+    updateUserDto: UpdateUserDto,
+  ): Promise<ResponseFilter<UserEntity>> {
+    user.name = updateUserDto.name;
+    user.family = updateUserDto.family;
+    user.age = updateUserDto.age;
+    user.password = this.hashPassword(updateUserDto.password);
+    await this.userRepository.save(user);
+    return new ResponseFilter(200, null, user);
   }
 }
