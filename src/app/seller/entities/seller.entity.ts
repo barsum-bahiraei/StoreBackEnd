@@ -16,6 +16,18 @@ export class SellerEntity {
   @Column()
   name: string;
 
+  @Column()
+  latitude: string;
+
+  @Column()
+  longitude: string;
+
+  @Column()
+  logo: string;
+
+  @Column()
+  description: string;
+
   @OneToMany(() => ProductEntity, (product) => product.id)
   products: ProductEntity[];
 
