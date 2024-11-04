@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
+import { AuthGuard } from './guards/auth.guard';
 
 @Module({
   imports: [
@@ -12,16 +13,15 @@ import { UserEntity } from './entities/user.entity';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        return {
-          global: true,
-          signOptions: { expiresIn: '60d' },
-          secret: configService.get<string>('SECRET_KEY'),
-        };
-      },
+      useFactory: (configService: ConfigService) => ({
+        global: true,
+        signOptions: { expiresIn: '60d' },
+        secret: configService.get<string>('SECRET_KEY'),
+      }),
     }),
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, AuthGuard],
+  exports: [AuthGuard],
 })
 export class UserModule {}
